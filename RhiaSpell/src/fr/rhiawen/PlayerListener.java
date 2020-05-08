@@ -3,6 +3,7 @@ package fr.rhiawen;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -60,6 +61,7 @@ public final class PlayerListener implements Listener {
 				Location location = player.getLocation();
 				boolean first = true;
 				Vector direction = location.getDirection().normalize();
+				
 				public void run() { //Running Loop
 					if (first) { //PlayerEyes Location
 						location.setY(location.getY() + 2);
@@ -68,11 +70,12 @@ public final class PlayerListener implements Listener {
 					dist += 0.3;
 					location.add(direction.getX() * dist, direction.getY() * dist, direction.getZ() * dist);
 					for (Entity e : location.getWorld().getEntities()) { //Check if we have to damage entity
-						if (e.getLocation().distance(location) < 2) {
+						if (e.getLocation().distance(location) < 2 && !e.equals(player)) {
 							if (!e.isDead()) {
 								LivingEntity entity = (LivingEntity) e;
-								if (spellList.equals(SpellList.AVADA)) {
+								if (spellList.getPower() == -1) { //-1 == instant death
 									entity.damage(entity.getHealth());
+									location.getWorld().strikeLightning(location);
 								}
 								else {
 									entity.damage(power);
@@ -90,7 +93,7 @@ public final class PlayerListener implements Listener {
 					location.subtract(direction.getX() * dist, direction.getY() * dist, direction.getZ() * dist);
 					
 				}
-			}.runTaskTimer(plugin, 0, 1);
+			}.runTaskTimer(plugin, 0, 0);
 		}
 	}
 	
