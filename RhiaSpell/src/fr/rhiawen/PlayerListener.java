@@ -83,7 +83,6 @@ public final class PlayerListener implements Listener {
 									switch (spellList.getName()) {
 									case "§6Pretrificus Totalus": //Stop moving 5 seconds
 										entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 255));
-										this.cancel();
 										break;
 									default:
 										break;
