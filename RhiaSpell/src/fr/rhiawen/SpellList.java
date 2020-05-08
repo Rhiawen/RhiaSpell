@@ -5,7 +5,8 @@ import org.bukkit.Particle;
 public enum SpellList {
 
 	AVADA(1, -1, 40, "§2Avada-Kedavra", Particle.SPELL),
-	STUPEFIX(2, 10, 40, "§cStupefix", Particle.FLAME);
+	STUPEFIX(2, 10, 40, "§cStupefix", Particle.FLAME),
+	PETRIFICUS(3, 0, 30, "§6Pretrificus Totalus", Particle.SPELL_WITCH);
 	
 	private final int id;
 	private final int power;

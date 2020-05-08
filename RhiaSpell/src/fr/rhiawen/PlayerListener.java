@@ -3,7 +3,6 @@ package fr.rhiawen;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +13,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -73,13 +74,26 @@ public final class PlayerListener implements Listener {
 						if (e.getLocation().distance(location) < 2 && !e.equals(player)) {
 							if (!e.isDead()) {
 								LivingEntity entity = (LivingEntity) e;
-								if (spellList.getPower() == -1) { //-1 == instant death
+								switch (spellList.getPower()) {
+								case -1: //Instant death
 									entity.damage(entity.getHealth());
 									location.getWorld().strikeLightning(location);
-								}
-								else {
+									break;
+								case 0: //Entity effect
+									switch (spellList.getName()) {
+									case "§6Pretrificus Totalus": //Stop moving 5 seconds
+										entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 255));
+										this.cancel();
+										break;
+									default:
+										break;
+									}
+									break;
+								default: //Damage
 									entity.damage(power);
-								}			
+									break;
+								}
+								this.cancel();
 							}
 						}
 					}
